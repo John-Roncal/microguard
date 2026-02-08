@@ -3,8 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/usuario.dart';
 import '../utils/api_config.dart';
+import 'firebase_messaging_service.dart';
 
 class AuthService {
+  final _firebaseMessagingService = FirebaseMessagingService();
+
   // Guardar token y datos de usuario
   Future<void> _saveAuthData(String token, Usuario usuario) async {
     final prefs = await SharedPreferences.getInstance();
@@ -34,9 +37,18 @@ class AuthService {
     return token != null;
   }
 
-  // Login
-  Future<Map<String, dynamic>> login(String correo, String contrasena, String fcmToken) async {
+  // Login con FCM token de Firebase
+  Future<Map<String, dynamic>> login(String correo, String contrasena) async {
     try {
+      // Obtener el token FCM actual de Firebase
+      String? fcmToken = await _firebaseMessagingService.getToken();
+
+      // Si no se puede obtener el token, usar uno temporal
+      if (fcmToken == null) {
+        fcmToken = 'temp_token_${DateTime.now().millisecondsSinceEpoch}';
+        print('Advertencia: No se pudo obtener el token FCM, usando temporal');
+      }
+
       final response = await http.post(
         Uri.parse(ApiConfig.login),
         headers: ApiConfig.headers,
@@ -250,6 +262,10 @@ class AuthService {
 
   // Cerrar sesión
   Future<void> logout() async {
+    // Eliminar el token FCM del dispositivo
+    await _firebaseMessagingService.deleteToken();
+
+    // Eliminar datos de autenticación
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
     await prefs.remove('usuario');

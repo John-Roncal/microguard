@@ -33,13 +33,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() => _isLoading = true);
 
-    // Por ahora usamos un token temporal, luego implementarás Firebase
-    final fcmToken = 'temp_token_${DateTime.now().millisecondsSinceEpoch}';
-
+    // El token FCM se obtiene automáticamente en AuthService
     final result = await _authService.login(
       _emailController.text.trim(),
       _passwordController.text,
-      fcmToken,
     );
 
     setState(() => _isLoading = false);

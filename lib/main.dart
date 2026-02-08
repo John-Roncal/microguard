@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/auth_service.dart';
+import 'services/firebase_messaging_service.dart';
 import 'utils/app_theme.dart';
 
-void main() {
+// Handler para notificaciones en background
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Mensaje recibido en background: ${message.notification?.title}');
+}
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializar Firebase
+  await Firebase.initializeApp();
+
+  // Configurar handler para notificaciones en background
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // Configurar orientación y barra de estado
   SystemChrome.setPreferredOrientations([
@@ -38,7 +54,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Splash screen que verifica autenticación
+// Splash screen que verifica autenticación e inicializa Firebase Messaging
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -48,14 +64,21 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final _authService = AuthService();
+  final _firebaseMessagingService = FirebaseMessagingService();
 
   @override
   void initState() {
     super.initState();
-    _checkAuth();
+    _initialize();
   }
 
-  Future<void> _checkAuth() async {
+  Future<void> _initialize() async {
+    // Inicializar Firebase Messaging
+    await _firebaseMessagingService.initialize();
+
+    // Obtener el token FCM
+    await _firebaseMessagingService.getToken();
+
     // Esperar un momento para mostrar el splash
     await Future.delayed(const Duration(seconds: 2));
 

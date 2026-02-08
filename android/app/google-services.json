@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "738279851915",
+    "project_id": "microguard-2025",
+    "storage_bucket": "microguard-2025.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738279851915:android:b18018ad1c39b31d09518e",
+        "android_client_info": {
+          "package_name": "com.proyect.microguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKzgV1MmcEGiHGX6ul3_poOEeiR8WkwVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
