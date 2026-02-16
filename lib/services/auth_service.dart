@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/usuario.dart';
@@ -49,6 +50,9 @@ class AuthService {
         print('Advertencia: No se pudo obtener el token FCM, usando temporal');
       }
 
+      print('Intentando login con correo: $correo');
+      print('URL: ${ApiConfig.login}');
+
       final response = await http.post(
         Uri.parse(ApiConfig.login),
         headers: ApiConfig.headers,
@@ -59,27 +63,78 @@ class AuthService {
         }),
       );
 
-      final data = jsonDecode(response.body);
+      print('Código de respuesta: ${response.statusCode}');
+      print('Cuerpo de respuesta: ${response.body}');
+
+      // Verificar si la respuesta está vacía o es null
+      if (response.body.isEmpty || response.body == 'null') {
+        return {
+          'success': false,
+          'message': 'El servidor no respondió correctamente. Verifica que el backend esté funcionando.',
+        };
+      }
+
+      // Intentar decodificar la respuesta
+      dynamic data;
+      try {
+        data = jsonDecode(response.body);
+      } catch (e) {
+        print('Error al decodificar JSON: $e');
+        return {
+          'success': false,
+          'message': 'Respuesta inválida del servidor: ${response.body}',
+        };
+      }
+
+      // Verificar si data es null
+      if (data == null) {
+        return {
+          'success': false,
+          'message': 'El servidor respondió con datos nulos. Verifica las credenciales o el backend.',
+        };
+      }
 
       if (response.statusCode == 200) {
-        final usuario = Usuario.fromJson(data['usuario']);
+        // Verificar que existan los campos necesarios
+        if (data['data'] == null || data['token'] == null) {
+          return {
+            'success': false,
+            'message': 'Respuesta del servidor incompleta. Falta información de usuario o token.',
+          };
+        }
+
+        final usuario = Usuario.fromJson(data['data']);
         await _saveAuthData(data['token'], usuario);
 
         return {
           'success': true,
-          'message': data['message'],
+          'message': data['message'] ?? 'Login exitoso',
           'usuario': usuario,
         };
       } else {
+        // Error del servidor (400, 401, 500, etc.)
         return {
           'success': false,
-          'message': data['message'] ?? 'Error al iniciar sesión',
+          'message': data['message'] ?? 'Error al iniciar sesión. Código: ${response.statusCode}',
         };
       }
-    } catch (e) {
+    } on SocketException catch (e) {
+      print('Error de red: $e');
       return {
         'success': false,
-        'message': 'Error de conexión: ${e.toString()}',
+        'message': 'No se puede conectar al servidor. Verifica tu conexión a internet y que el backend esté corriendo.',
+      };
+    } on FormatException catch (e) {
+      print('Error de formato: $e');
+      return {
+        'success': false,
+        'message': 'El servidor respondió con un formato inválido.',
+      };
+    } catch (e) {
+      print('Error inesperado: $e');
+      return {
+        'success': false,
+        'message': 'Error inesperado: ${e.toString()}',
       };
     }
   }
@@ -105,7 +160,7 @@ class AuthService {
           'Celular': celular,
           'Contrasena': contrasena,
           'RUC': ruc,
-          'RazonSocial': razonSocial,
+          'NombreTienda': razonSocial,
         }),
       );
 

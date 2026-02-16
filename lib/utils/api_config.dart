@@ -1,6 +1,6 @@
 class ApiConfig {
   // Cambia esta URL por la de tu servidor backend
-  static const String baseUrl = 'http://10.0.2.2:5000'; // 'http://10.0.2.2:5000' para desarrollo local emulador android
+  static const String baseUrl = 'http://10.0.2.2:3000';// 'http://10.0.2.2:3000' para desarrollo local emulador android
 
   // Endpoints de usuario
   static const String registro = '$baseUrl/usuario/registro';
