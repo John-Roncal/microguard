@@ -95,8 +95,10 @@ class AuthService {
       }
 
       if (response.statusCode == 200) {
+        print(data['data']['token']);
         // Verificar que existan los campos necesarios
-        if (data['data'] == null || data['token'] == null) {
+        if (data['data'] == null || data['data']['token'] == null) {
+
           return {
             'success': false,
             'message': 'Respuesta del servidor incompleta. Falta información de usuario o token.',
@@ -104,7 +106,7 @@ class AuthService {
         }
 
         final usuario = Usuario.fromJson(data['data']);
-        await _saveAuthData(data['token'], usuario);
+        await _saveAuthData(data['data']['token'], usuario);
 
         return {
           'success': true,
