@@ -194,10 +194,10 @@ class _RecuperarContrasenaScreen2State extends State<RecuperarContrasenaScreen2>
     return TextFormField(
       controller: _codigoController,
       keyboardType: TextInputType.number,
-      maxLength: 4,
+      maxLength: 6,
       decoration: const InputDecoration(
         labelText: 'Codigo',
-        hintText: '12314',
+        hintText: '123456',
         prefixIcon: Icon(Icons.lock_outline),
         counterText: '',
       ),
@@ -205,8 +205,8 @@ class _RecuperarContrasenaScreen2State extends State<RecuperarContrasenaScreen2>
         if (value == null || value.isEmpty) {
           return 'Por favor ingrese el código';
         }
-        if (value.length != 4) {
-          return 'El código debe tener 4 dígitos';
+        if (value.length != 6) {
+          return 'El código debe tener 6 dígitos';
         }
         return null;
       },

@@ -83,7 +83,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 _buildTextField(
                   controller: _nombresController,
                   label: 'Nombre',
-                  hint: 'Jhordany',
+                  hint: 'Juan',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese su nombre';
@@ -100,7 +100,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 _buildTextField(
                   controller: _apellidosController,
                   label: 'Apellidos',
-                  hint: 'Torres Villena',
+                  hint: 'Pérez',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese sus apellidos';
@@ -117,7 +117,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 _buildTextField(
                   controller: _celularController,
                   label: 'Celular',
-                  hint: '912634586',
+                  hint: '987654321',
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -135,7 +135,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 _buildTextField(
                   controller: _nombreNegocioController,
                   label: 'Nombre del Negocio',
-                  hint: 'Tienda de abarrotes',
+                  hint: 'Tiendita de Don Pepe',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese el nombre del negocio';

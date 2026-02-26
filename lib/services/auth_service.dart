@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/usuario.dart';
+import '../models/registro_cuenta.dart';
 import '../utils/api_config.dart';
 import 'firebase_messaging_service.dart';
 
@@ -10,7 +10,7 @@ class AuthService {
   final _firebaseMessagingService = FirebaseMessagingService();
 
   // Guardar token y datos de usuario
-  Future<void> _saveAuthData(String token, Usuario usuario) async {
+  Future<void> _saveAuthData(String token, RegistroCuenta usuario) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
     await prefs.setString('usuario', jsonEncode(usuario.toJson()));
@@ -23,11 +23,11 @@ class AuthService {
   }
 
   // Obtener usuario guardado
-  Future<Usuario?> getUsuario() async {
+  Future<RegistroCuenta?> getUsuario() async {
     final prefs = await SharedPreferences.getInstance();
     final usuarioJson = prefs.getString('usuario');
     if (usuarioJson != null) {
-      return Usuario.fromJson(jsonDecode(usuarioJson));
+      return RegistroCuenta.fromJson(jsonDecode(usuarioJson));
     }
     return null;
   }
@@ -105,7 +105,7 @@ class AuthService {
           };
         }
 
-        final usuario = Usuario.fromJson(data['data']);
+        final usuario = RegistroCuenta.fromJson(data['data']);
         await _saveAuthData(data['data']['token'], usuario);
 
         return {
@@ -149,7 +149,7 @@ class AuthService {
     required String celular,
     required String contrasena,
     required String ruc,
-    required String razonSocial,
+    required String nombreTienda,
   }) async {
     try {
       final response = await http.post(
@@ -162,7 +162,7 @@ class AuthService {
           'Celular': celular,
           'Contrasena': contrasena,
           'RUC': ruc,
-          'NombreTienda': razonSocial,
+          'NombreTienda': nombreTienda,
         }),
       );
 

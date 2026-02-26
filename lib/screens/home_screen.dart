@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:microguard/models/registro_cuenta.dart';
 import '../services/auth_service.dart';
 import '../models/usuario.dart';
 import '../models/producto_mas_vendido.dart';
@@ -16,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _authService = AuthService();
-  Usuario? _usuario;
+  RegistroCuenta? _usuario;
   bool _isLoading = true;
   int _selectedIndex = 0;
 

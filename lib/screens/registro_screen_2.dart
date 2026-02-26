@@ -59,7 +59,7 @@ class _RegistroScreen2State extends State<RegistroScreen2> {
       celular: widget.celular,
       contrasena: _contrasenaController.text,
       ruc: widget.ruc,
-      razonSocial: widget.nombreNegocio,
+      nombreTienda: widget.nombreNegocio,
     );
 
     setState(() => _isLoading = false);
@@ -217,7 +217,7 @@ class _RegistroScreen2State extends State<RegistroScreen2> {
       keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
         labelText: 'Correo Electronico',
-        hintText: 'jhordanytorres29@gmail.com',
+        hintText: 'example@gmail.com',
         prefixIcon: Icon(Icons.email_outlined),
       ),
       validator: (value) {
