@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:microguard/models/registro_cuenta.dart';
 import '../services/auth_service.dart';
-import '../models/usuario.dart';
 import '../models/producto_mas_vendido.dart';
 import '../utils/app_theme.dart';
 import '../widgets/stat_card.dart';
+import 'categorias_screen.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -235,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }),
             _buildDrawerItem(Icons.category, 'Categorías', () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const CategoriasScreen()));
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Categorías - Próximamente')),
               );
