@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:microguard/models/registro_cuenta.dart';
+import 'package:microguard/screens/proveedores_screen.dart';
 import '../services/auth_service.dart';
 import '../models/producto_mas_vendido.dart';
 import '../utils/app_theme.dart';
@@ -223,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }),
             _buildDrawerItem(Icons.group, 'Proveedores', () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const ProveedoresScreen()));
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Proveedores - Próximamente')),
               );
