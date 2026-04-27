@@ -320,7 +320,7 @@ class AuthService {
   // Cerrar sesión
   Future<void> logout() async {
     // Eliminar el token FCM del dispositivo
-    await _firebaseMessagingService.deleteToken();
+    //await _firebaseMessagingService.deleteToken();
 
     // Eliminar datos de autenticación
     final prefs = await SharedPreferences.getInstance();
